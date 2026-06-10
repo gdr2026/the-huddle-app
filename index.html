@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>the huddle — Interview Prep</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #f5f5f5;
+      --off-black: #efefef;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --border-hover: #cccccc;
+      --burgundy: #8b1a2f;
+      --burgundy-light: #a01e36;
+      --burgundy-glow: rgba(139, 26, 47, 0.08);
+      --navy: #1e2355;
+      --white: #111111;
+      --muted: #777777;
+      --label: #333333;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--burgundy);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+    }
+
+    .logo-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--navy);
+    }
+
+    .header-tag {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 4rem;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--burgundy-light);
+      background: var(--burgundy-glow);
+      border: 1px solid rgba(139, 26, 47, 0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--burgundy-light);
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── Form ── */
+    .form-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
+    }
+
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--label);
+    }
+
+    label .opt {
+      font-weight: 400;
+      color: var(--muted);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    input[type="text"],
+    input[type="url"],
+    textarea {
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      font-family: inherit;
+      resize: none;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+
+    input:focus, textarea:focus {
+      border-color: var(--burgundy);
+      box-shadow: 0 0 0 3px var(--burgundy-glow);
+    }
+
+    /* ── Upload ── */
+    .upload-zone {
+      background: var(--off-black);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--burgundy);
+      background: var(--burgundy-glow);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .upload-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .upload-label strong {
+      color: var(--label);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Button ── */
+    .btn-prep {
+      background: var(--burgundy);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-prep:hover {
+      background: var(--burgundy-light);
+      box-shadow: 0 4px 24px rgba(139, 26, 47, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-prep:active { transform: translateY(0); }
+
+    .btn-prep svg { flex-shrink: 0; }
+
+    /* ── Output ── */
+    #output { display: none; max-width: 720px; margin: 0 auto; padding: 0 1.5rem 6rem; }
+
+    #output.visible { display: block; }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .output-header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .output-header h2 span { color: var(--burgundy-light); }
+
+    .output-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .output-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .output-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .icon-burgundy { background: var(--burgundy-glow); color: var(--burgundy-light); }
+    .icon-white { background: rgba(245,245,245,0.07); color: var(--label); }
+
+    .output-card-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .output-card p {
+      font-size: 0.9rem;
+      color: var(--label);
+      line-height: 1.7;
+    }
+
+    .output-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .output-card ul li {
+      font-size: 0.88rem;
+      color: var(--label);
+      line-height: 1.6;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .output-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.58em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--burgundy);
+    }
+
+    .questions-list {
+      counter-reset: q;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .questions-list li {
+      counter-increment: q;
+      font-size: 0.88rem;
+      color: var(--label);
+      line-height: 1.6;
+      padding-left: 1.6rem;
+      position: relative;
+    }
+
+    .questions-list li::before {
+      content: counter(q) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--label);
+    }
+
+    /* ── Spinner ── */
+    .spinner-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .spinner-wrap.visible { display: flex; }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--burgundy);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- back bubble (burgundy) -->
+        <rect x="10" y="4" width="30" height="24" rx="6" fill="#8b1a2f"/>
+        <polygon points="28,28 34,28 31,34" fill="#8b1a2f"/>
+        <!-- front bubble outline (navy) -->
+        <rect x="3" y="0" width="30" height="24" rx="6" fill="none" stroke="#1e2355" stroke-width="3"/>
+        <polygon points="10,24 16,24 13,30" fill="none" stroke="#1e2355" stroke-width="3" stroke-linejoin="round"/>
+        <!-- lines inside front bubble -->
+        <line x1="10" y1="9" x2="24" y2="9" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-name">the huddle</span>
+    </div>
+    <span class="header-tag">AI Interview Intelligence</span>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Walk in knowing<br/>more than they <em>expect.</em></h1>
+    <p>Enter your details and let the huddle do the research — so you show up sharp, confident, and ready.</p>
+  </section>
+
+  <!-- Form -->
+  <div class="form-wrap">
+    <div class="form-card">
+
+      <div class="form-row">
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" type="text" placeholder="e.g. Stripe" />
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <input id="role" type="text" placeholder="e.g. Head of Product" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="jd">Job Description URL <span class="opt">(optional)</span></label>
+        <input id="jd" type="url" placeholder="https://careers.company.com/role" />
+      </div>
+
+      <div class="field">
+        <label for="interviewers">Interviewer(s)</label>
+        <input id="interviewers" type="text" placeholder="e.g. Sarah Chen, James Okoye" />
+      </div>
+
+      <div class="field">
+        <label>Your CV <span class="opt">(optional — PDF or Word)</span></label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="cvFile" accept=".pdf,.doc,.docx" />
+          <div class="upload-icon">📄</div>
+          <div class="upload-label"><strong>Click to upload</strong> or drag & drop</div>
+          <div class="upload-label" style="margin-top:0.2rem; font-size:0.74rem;">PDF, DOC, DOCX up to 10 MB</div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <button class="btn-prep" onclick="runPrep()">
+        Prep Me for My Interview
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Spinner -->
+  <div class="spinner-wrap" id="spinner">
+    <div class="spinner"></div>
+    <span>Researching, analysing, preparing your brief…</span>
+  </div>
+
+  <!-- Output -->
+  <div id="output">
+    <div class="output-header">
+      <h2>Your Interview Brief — <span id="outputTitle"></span></h2>
+    </div>
+
+    <div class="output-card" id="cardSummary">
+      <div class="output-card-header">
+        <div class="output-card-title">Company Snapshot</div>
+      </div>
+      <p id="companySummary"></p>
+    </div>
+
+    <div class="output-card" id="cardPainpoints">
+      <div class="output-card-header">
+        <div class="output-card-title">Pain Points & Pressures</div>
+      </div>
+      <ul id="painpointsList"></ul>
+    </div>
+
+    <div class="output-card" id="cardInterviewer">
+      <div class="output-card-header">
+        <div class="output-card-title">Interviewer Profile</div>
+      </div>
+      <ul id="interviewerList"></ul>
+    </div>
+
+    <div class="output-card" id="cardTopOfMind">
+      <div class="output-card-header">
+        <div class="output-card-title">What's Top of Mind for the Interviewer</div>
+      </div>
+      <ul id="topOfMindList"></ul>
+    </div>
+
+    <div class="output-card" id="cardCV">
+      <div class="output-card-header">
+        <div class="output-card-title">CV Highlights to Lead With</div>
+      </div>
+      <ul id="cvList"></ul>
+    </div>
+
+    <div class="output-card" id="cardQuestions">
+      <div class="output-card-header">
+        <div class="output-card-title">10 Smart Questions to Ask</div>
+      </div>
+      <ol class="questions-list" id="questionsList"></ol>
+    </div>
+  </div>
+
+  <footer>
+    <div class="hero-eyebrow" style="display:inline-flex; margin-bottom:0.75rem;">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <circle cx="5" cy="5" r="4" fill="currentColor"/>
+      </svg>
+      Powered by AI
+    </div>
+    <div>the huddle &mdash; AI-powered interview intelligence. Not affiliated with any company mentioned.</div>
+  </footer>
+
+  <script>
+    // File upload label update
+    document.getElementById('cvFile').addEventListener('change', function () {
+      const zone = document.getElementById('uploadZone');
+      if (this.files && this.files[0]) {
+        zone.querySelector('.upload-label').innerHTML = `<strong>${this.files[0].name}</strong>`;
+      }
+    });
+
+    function setList(id, items) {
+      const el = document.getElementById(id);
+      el.innerHTML = '';
+      items.forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        el.appendChild(li);
+      });
+    }
+
+    function runPrep() {
+      const company = document.getElementById('company').value.trim() || 'the company';
+      const role = document.getElementById('role').value.trim() || 'this role';
+      const interviewers = document.getElementById('interviewers').value.trim();
+
+      // Show spinner, hide output
+      document.getElementById('spinner').classList.add('visible');
+      document.getElementById('output').classList.remove('visible');
+      document.querySelector('.form-wrap').style.display = 'none';
+
+      // Simulate AI call (replace with real API call)
+      setTimeout(() => {
+        document.getElementById('spinner').classList.remove('visible');
+
+        document.getElementById('outputTitle').textContent = `${role} @ ${company}`;
+
+        document.getElementById('companySummary').textContent =
+          `${company} is a high-growth technology company operating at the intersection of financial infrastructure and developer tooling. Founded over a decade ago, it has scaled to process hundreds of billions in payments annually, serving millions of businesses across 135+ countries. The company is privately held at a valuation north of $65B and is widely regarded as the gold standard in its category. Its culture prizes rigour, intellectual honesty, and a high bar for craft — making preparation and precision critical for candidates.`;
+
+        const interviewer1 = interviewers ? interviewers.split(',')[0].trim() : 'Your interviewer';
+
+        setList('interviewerList', [
+          `${interviewer1} has a background likely spanning both operational and strategic responsibilities, with tenure that suggests they were part of building the function from an earlier stage.`,
+          `Their LinkedIn activity and public writing indicate a preference for data-informed decision making and a low tolerance for ambiguity in candidates.`,
+          `They tend to ask about process and frameworks — expect questions that probe how you structure your thinking, not just what outcomes you achieved.`,
+          `Colleagues describe them as direct and fast-paced; they will appreciate concise answers backed by evidence over polished but vague narratives.`,
+          `They have interviewed extensively for this level and will notice quickly if you haven't done your research on the company's current priorities.`,
+        ]);
+
+        setList('painpointsList', [
+          'Sustaining growth rates as the business matures and competition from legacy incumbents intensifies.',
+          'Expanding into enterprise and regulated markets where the product-market fit is less proven.',
+          'Talent retention in a post-ZIRP environment where compensation expectations have shifted.',
+          'Deepening localisation for non-English markets amid increasing regulatory complexity.',
+          'Balancing platform openness with fraud risk and financial crime obligations.',
+        ]);
+
+        setList('topOfMindList', [
+          `Candidates who can demonstrate genuine impact at scale, not just activity metrics.`,
+          `How you think through first principles — ${company} prizes reasoning over credentials.`,
+          `Your ability to work cross-functionally and influence without authority.`,
+          `Evidence of a high ownership mentality and comfort operating in ambiguity.`,
+          interviewers ? `${interviewers.split(',')[0].trim()} is likely evaluating your strategic clarity and whether your communication style fits the team's directness.` : `Whether your communication style matches the company's direct, written-first culture.`,
+        ]);
+
+        setList('cvList', [
+          'Lead with quantified outcomes — revenue driven, users scaled, costs reduced. Numbers land.',
+          'Any experience with platform or infrastructure products will resonate strongly here.',
+          'Highlight cross-functional leadership: product, engineering, and commercial alignment.',
+          'Global or multi-market experience is a significant differentiator given their expansion agenda.',
+          'Evidence of raising the bar — hiring decisions, team building, or cultural contributions.',
+        ]);
+
+        setList('questionsList', [
+          `What does success look like in the first 90 days for someone joining as ${role}?`,
+          `Where is the team or function currently falling short of what you'd want it to be?`,
+          `How does ${company} balance moving fast with the rigour needed in a regulated environment?`,
+          `What's the biggest strategic bet the company is making in the next 18 months, and how does this role connect to it?`,
+          interviewers ? `${interviewers.split(',')[0].trim()}, what has surprised you most about working here?` : `What's surprised you most about working here?`,
+          `How is performance typically measured for this role, and how often is that reviewed?`,
+          `What are the biggest internal constraints on the team's ability to move quickly?`,
+          `How does leadership here handle disagreement — especially when data is ambiguous?`,
+          `What's the career trajectory for someone who excels in this position?`,
+          `Is there anything about my background that gives you pause that I could address directly?`,
+        ]);
+
+        const out = document.getElementById('output');
+        out.classList.add('visible');
+        out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 2400);
+    }
+  </script>
+</body>
+</html>
