@@ -420,7 +420,7 @@
 <body>
 
   <header>
-    <div class="logo">
+    <div class="logo" onclick="resetForm()" style="cursor:pointer;">
       <svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- back bubble (burgundy) -->
         <rect x="10" y="4" width="30" height="24" rx="6" fill="#8b1a2f"/>
@@ -553,6 +553,19 @@
   </footer>
 
   <script>
+    function resetForm() {
+      document.getElementById('company').value = '';
+      document.getElementById('role').value = '';
+      document.getElementById('jd').value = '';
+      document.getElementById('interviewers').value = '';
+      document.getElementById('cvFile').value = '';
+      document.getElementById('uploadZone').querySelector('.upload-label').innerHTML = '<strong>Click to upload</strong> or drag &amp; drop';
+      document.getElementById('output').classList.remove('visible');
+      document.getElementById('spinner').classList.remove('visible');
+      document.querySelector('.form-wrap').style.display = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     // File upload label update
     document.getElementById('cvFile').addEventListener('change', function () {
       const zone = document.getElementById('uploadZone');
