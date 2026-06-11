@@ -454,6 +454,15 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+
+    .rating-box:hover {
+      border-color: var(--burgundy);
+      box-shadow: 0 4px 12px rgba(139, 26, 47, 0.1);
+      transform: translateY(-1px);
     }
 
     .rating-source {
@@ -867,19 +876,20 @@
           <span class="meta-chip share">Valuation: ~$65B (last round)</span>`;
 
         // Ratings
+        const companySlug = encodeURIComponent(company);
         document.getElementById('ratingsRow').innerHTML = `
-          <div class="rating-box">
-            <div class="rating-source">Glassdoor</div>
+          <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
+            <div class="rating-source">Glassdoor ↗</div>
             <div class="rating-score">4.2 <span>/ 5</span></div>
             <div class="rating-stars">★★★★☆</div>
             <div class="rating-label">Based on 2,841 reviews</div>
-          </div>
-          <div class="rating-box">
-            <div class="rating-source">Blind</div>
+          </a>
+          <a class="rating-box" href="https://www.teamblind.com/search/${companySlug}" target="_blank" rel="noopener">
+            <div class="rating-source">Blind ↗</div>
             <div class="rating-score">3.8 <span>/ 5</span></div>
             <div class="rating-stars">★★★★☆</div>
             <div class="rating-label">Based on 1,204 reviews</div>
-          </div>`;
+          </a>`;
 
         // Media links
         const mediaItems = [
