@@ -488,6 +488,56 @@
       color: var(--muted);
     }
 
+    /* ── Coaching nudge ── */
+    .coaching-nudge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      background: var(--card);
+      border: 1px solid rgba(139, 26, 47, 0.25);
+      border-left: 3px solid var(--burgundy);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nudge-left { flex: 1; min-width: 0; }
+
+    .nudge-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+
+    .nudge-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .nudge-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--burgundy);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.6rem 1.1rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+
+    .nudge-btn:hover {
+      background: var(--burgundy-light);
+      transform: translateY(-1px);
+    }
+
     /* ── Media grid ── */
     .media-grid {
       display: grid;
@@ -615,6 +665,7 @@
     <nav>
       <a href="index.html" class="nav-link active">Home</a>
       <a href="resources.html" class="nav-link">Resources</a>
+      <a href="coaching.html" class="nav-link">Work with a Coach</a>
     </nav>
   </header>
 
@@ -728,6 +779,14 @@
         <div class="output-card-title">10 Smart Questions to Ask</div>
       </div>
       <ol class="questions-list" id="questionsList"></ol>
+    </div>
+
+    <div class="coaching-nudge" id="coachingNudge">
+      <div class="nudge-left">
+        <div class="nudge-title">Want to go deeper?</div>
+        <div class="nudge-desc">Work 1:1 with a coach to practise your answers, sharpen your story, and walk in truly ready.</div>
+      </div>
+      <a href="coaching.html" class="nudge-btn">Work with a Coach →</a>
     </div>
 
     <div class="output-card" id="cardMedia">

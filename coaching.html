@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work with a Coach — the huddle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #f5f5f5;
+      --off-black: #efefef;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --burgundy: #8b1a2f;
+      --burgundy-light: #a01e36;
+      --burgundy-glow: rgba(139, 26, 47, 0.08);
+      --navy: #1e2355;
+      --white: #111111;
+      --muted: #777777;
+      --label: #333333;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .logo-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--navy);
+    }
+
+    nav { display: flex; align-items: center; gap: 1.5rem; }
+
+    .nav-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--white); }
+    .nav-link.active { color: var(--burgundy); }
+
+    /* ── Hero ── */
+    .coaching-hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 3.5rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--burgundy-light);
+      background: var(--burgundy-glow);
+      border: 1px solid rgba(139, 26, 47, 0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .coaching-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      max-width: 560px;
+    }
+
+    .coaching-hero h1 em {
+      font-style: normal;
+      color: var(--burgundy-light);
+    }
+
+    .coaching-hero p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ── */
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Offering cards ── */
+    .offering-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .offering-card.featured {
+      border-color: var(--burgundy);
+      box-shadow: 0 0 0 1px var(--burgundy);
+    }
+
+    .offering-badge {
+      position: absolute;
+      top: -11px;
+      left: 1.5rem;
+      background: var(--burgundy);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 100px;
+    }
+
+    .offering-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .offering-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .offering-tagline {
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-width: 380px;
+      line-height: 1.5;
+    }
+
+    .offering-price {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .price-amount {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--burgundy);
+      line-height: 1;
+    }
+
+    .price-detail {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .offering-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+
+    .offering-features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem 1.5rem;
+    }
+
+    @media (max-width: 520px) { .offering-features { grid-template-columns: 1fr; } }
+
+    .offering-features li {
+      font-size: 0.8rem;
+      color: var(--label);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .offering-features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--burgundy);
+    }
+
+    .offering-cta {
+      margin-top: 1.5rem;
+    }
+
+    .btn-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--burgundy);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-book:hover {
+      background: var(--burgundy-light);
+      box-shadow: 0 4px 16px rgba(139, 26, 47, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      color: var(--burgundy);
+      border: 1.5px solid var(--burgundy);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      background: var(--burgundy-glow);
+    }
+
+    /* ── Contact form ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+    .cf-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .cf-field label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--label);
+    }
+
+    .cf-opt {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--muted);
+    }
+
+    .cf-field input,
+    .cf-field textarea {
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-size: 0.88rem;
+      font-family: 'Poppins', sans-serif;
+      padding: 0.65rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+      width: 100%;
+    }
+
+    .cf-field input::placeholder,
+    .cf-field textarea::placeholder { color: var(--muted); }
+
+    .cf-field input:focus,
+    .cf-field textarea:focus {
+      border-color: var(--burgundy);
+      box-shadow: 0 0 0 3px var(--burgundy-glow);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--burgundy-light);
+      background: var(--burgundy-glow);
+      border: 1px solid rgba(139, 26, 47, 0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">
+      <svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="4" width="30" height="24" rx="6" fill="#8b1a2f"/>
+        <polygon points="28,28 34,28 31,34" fill="#8b1a2f"/>
+        <rect x="3" y="0" width="30" height="24" rx="6" fill="none" stroke="#1e2355" stroke-width="3"/>
+        <polygon points="10,24 16,24 13,30" fill="none" stroke="#1e2355" stroke-width="3" stroke-linejoin="round"/>
+        <line x1="10" y1="9" x2="24" y2="9" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-name">the huddle</span>
+    </a>
+    <nav>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="resources.html" class="nav-link">Resources</a>
+      <a href="coaching.html" class="nav-link active">Work with a Coach</a>
+    </nav>
+  </header>
+
+  <div class="coaching-hero">
+    <div class="eyebrow">Career &amp; Executive Coaching</div>
+    <h1>The right coach changes<br/>what feels <em>possible.</em></h1>
+    <p>Whether you are navigating a career transition, stepping into a more senior role, or simply ready for something different — we work with you to get clear, get confident, and move forward with intention.</p>
+  </div>
+
+  <div class="wrap">
+
+    <div class="section-label">Where would you like to start</div>
+
+    <!-- Exploratory Call -->
+    <div class="offering-card">
+      <div class="offering-top">
+        <div>
+          <div class="offering-name">Exploratory Call</div>
+          <div class="offering-tagline">A no-obligation conversation to understand where you are, where you want to be, and whether we are the right fit to work together.</div>
+        </div>
+        <div class="offering-price">
+          <div class="price-amount">Free</div>
+          <div class="price-detail">30 minutes / video call</div>
+        </div>
+      </div>
+      <hr class="offering-divider" />
+      <ul class="offering-features">
+        <li>Understand your current situation and goals</li>
+        <li>Explore what is holding you back</li>
+        <li>Discuss the right coaching approach for you</li>
+        <li>No commitment required</li>
+      </ul>
+      <div class="offering-cta">
+        <form class="contact-form" action="https://formspree.io/f/xeewredp" method="POST">
+          <div class="form-row">
+            <div class="cf-field">
+              <label for="cf-name">Your name</label>
+              <input type="text" id="cf-name" name="name" placeholder="Jane Smith" required />
+            </div>
+            <div class="cf-field">
+              <label for="cf-email">Email address</label>
+              <input type="email" id="cf-email" name="email" placeholder="jane@example.com" required />
+            </div>
+          </div>
+          <div class="cf-field">
+            <label for="cf-message">What's on your mind? <span class="cf-opt">(optional)</span></label>
+            <textarea id="cf-message" name="message" rows="3" placeholder="A brief note about where you are and what you're hoping to work on…"></textarea>
+          </div>
+          <button type="submit" class="btn-book">Request a call</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <circle cx="5" cy="5" r="4" fill="currentColor"/>
+      </svg>
+      Powered by AI
+    </div>
+    <div>the huddle — AI-powered interview intelligence. Not affiliated with any company mentioned.</div>
+  </footer>
+
+</body>
+</html>
