@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources — the huddle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #f5f5f5;
+      --off-black: #efefef;
+      --card: #ffffff;
+      --border: #e0e0e0;
+      --burgundy: #8b1a2f;
+      --burgundy-light: #a01e36;
+      --burgundy-glow: rgba(139, 26, 47, 0.08);
+      --navy: #1e2355;
+      --white: #111111;
+      --muted: #777777;
+      --label: #333333;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .logo-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--navy);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--white); }
+    nav a.active { color: var(--burgundy); }
+
+    /* ── Page hero ── */
+    .page-hero {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 2.5rem;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+
+    .page-hero h1 em {
+      font-style: normal;
+      color: var(--burgundy-light);
+    }
+
+    .page-hero p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    /* ── Sections ── */
+    .resources-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Resource cards ── */
+    .resource-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .resource-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    }
+
+    .resource-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateY(-1px);
+      border-color: var(--border);
+    }
+
+    .resource-thumb {
+      width: 80px;
+      height: 52px;
+      border-radius: 7px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--off-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .resource-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .resource-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .resource-type {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+      background: var(--burgundy-glow);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .resource-source {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .resource-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 0.25rem;
+    }
+
+    .resource-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .resource-arrow {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-left: auto;
+      align-self: center;
+      flex-shrink: 0;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .resource-card:hover .resource-arrow {
+      color: var(--burgundy);
+      transform: translateX(3px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--burgundy-light);
+      background: var(--burgundy-glow);
+      border: 1px solid rgba(139, 26, 47, 0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">
+      <svg width="44" height="38" viewBox="0 0 44 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="4" width="30" height="24" rx="6" fill="#8b1a2f"/>
+        <polygon points="28,28 34,28 31,34" fill="#8b1a2f"/>
+        <rect x="3" y="0" width="30" height="24" rx="6" fill="none" stroke="#1e2355" stroke-width="3"/>
+        <polygon points="10,24 16,24 13,30" fill="none" stroke="#1e2355" stroke-width="3" stroke-linejoin="round"/>
+        <line x1="10" y1="9" x2="24" y2="9" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="10" y1="15" x2="20" y2="15" stroke="#1e2355" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-name">the huddle</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="resources.html" class="active">Resources</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <h1>Get <em>interview-ready.</em></h1>
+    <p>Curated reads and watches on presence, nerves, storytelling, and showing up as your best self.</p>
+  </div>
+
+  <div class="resources-wrap">
+
+    <!-- Presence & Confidence -->
+    <div>
+      <div class="section-label">Presence & Confidence</div>
+      <div class="resource-list">
+
+        <a class="resource-card" href="https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">TED</span>
+            </div>
+            <div class="resource-title">Your body language may shape who you are — Amy Cuddy</div>
+            <div class="resource-desc">How posture and presence before and during an interview physically changes how you perform and are perceived.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://hbr.org/2021/11/how-to-project-confidence-in-a-job-interview" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">Harvard Business Review</span>
+            </div>
+            <div class="resource-title">How to project confidence in a job interview</div>
+            <div class="resource-desc">Practical techniques for signalling calm authority — from vocal pacing to eye contact and active listening.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.youtube.com/watch?v=eIho2S0ZahI" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">Big Think</span>
+            </div>
+            <div class="resource-title">The science of charisma — and how to develop it</div>
+            <div class="resource-desc">Olivia Fox Cabane on the three pillars of charisma and how to project warmth and power simultaneously.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Managing Nerves -->
+    <div>
+      <div class="section-label">Managing Nerves</div>
+      <div class="resource-list">
+
+        <a class="resource-card" href="https://hbr.org/2016/03/if-youre-nervous-about-a-job-interview-reframe-your-anxiety-as-excitement" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">Harvard Business Review</span>
+            </div>
+            <div class="resource-title">Reframe your anxiety as excitement</div>
+            <div class="resource-desc">Research-backed technique: telling yourself "I am excited" outperforms trying to calm down — and changes your performance.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.youtube.com/watch?v=RVmMeMcGc0Y" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">Andrew Huberman</span>
+            </div>
+            <div class="resource-title">The physiological sigh — real-time stress relief</div>
+            <div class="resource-desc">A 5-second breathing technique proven to lower physiological anxiety faster than any other method. Use it before you walk in.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.themuse.com/advice/how-to-stop-being-nervous-in-job-interviews" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">The Muse</span>
+            </div>
+            <div class="resource-title">How to stop being so nervous in interviews</div>
+            <div class="resource-desc">Grounded, practical advice on preparation rituals, what to do the night before, and how to reset mid-interview.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Storytelling & CV -->
+    <div>
+      <div class="section-label">Storytelling & Highlighting Your CV</div>
+      <div class="resource-list">
+
+        <a class="resource-card" href="https://hbr.org/2014/06/how-to-give-a-killer-presentation" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">Harvard Business Review</span>
+            </div>
+            <div class="resource-title">How to tell your professional story compellingly</div>
+            <div class="resource-desc">Frameworks for turning your career history into a narrative arc that keeps interviewers engaged from start to finish.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.youtube.com/watch?v=0OjfNFalNq4" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">Jeff Su / YouTube</span>
+            </div>
+            <div class="resource-title">How to answer "Tell me about yourself" perfectly</div>
+            <div class="resource-desc">A clear, repeatable structure for the most common opening question — used by ex-Google and McKinsey candidates.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.linkedin.com/business/talent/blog/talent-acquisition/how-to-use-star-method-in-interviews" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">LinkedIn Talent Blog</span>
+            </div>
+            <div class="resource-title">Mastering the STAR method for behavioural questions</div>
+            <div class="resource-desc">Situation, Task, Action, Result — how to structure answers so your CV achievements land with maximum impact.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Asking Great Questions -->
+    <div>
+      <div class="section-label">Asking Great Questions</div>
+      <div class="resource-list">
+
+        <a class="resource-card" href="https://hbr.org/2018/05/the-surprising-power-of-questions" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">Harvard Business Review</span>
+            </div>
+            <div class="resource-title">The surprising power of questions</div>
+            <div class="resource-desc">Why asking thoughtful questions in interviews signals intelligence, curiosity, and executive presence — and how to do it well.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.youtube.com/watch?v=y1SHuf-4HhE" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">Work It Daily</span>
+            </div>
+            <div class="resource-title">The best questions to ask at the end of an interview</div>
+            <div class="resource-desc">Questions that signal you've done your homework, show genuine curiosity, and leave a strong final impression.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Salary & Negotiation -->
+    <div>
+      <div class="section-label">Salary & Negotiation</div>
+      <div class="resource-list">
+
+        <a class="resource-card" href="https://hbr.org/2014/04/15-rules-for-negotiating-a-job-offer" target="_blank" rel="noopener">
+          <div class="resource-thumb">📰</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Article</span>
+              <span class="resource-source">Harvard Business Review</span>
+            </div>
+            <div class="resource-title">15 rules for negotiating a job offer</div>
+            <div class="resource-desc">The definitive guide to salary negotiation — when to speak, when to stay silent, and how to anchor without alienating.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+        <a class="resource-card" href="https://www.youtube.com/watch?v=km2Hd_xgo9Q" target="_blank" rel="noopener">
+          <div class="resource-thumb">▶️</div>
+          <div class="resource-body">
+            <div class="resource-meta">
+              <span class="resource-type">Video</span>
+              <span class="resource-source">Ramit Sethi</span>
+            </div>
+            <div class="resource-title">Exactly what to say when negotiating salary</div>
+            <div class="resource-desc">Word-for-word scripts for the most common salary negotiation scenarios — including counter-offers and competing bids.</div>
+          </div>
+          <span class="resource-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="hero-eyebrow">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <circle cx="5" cy="5" r="4" fill="currentColor"/>
+      </svg>
+      Powered by AI
+    </div>
+    <div>the huddle — AI-powered interview intelligence. Not affiliated with any company mentioned.</div>
+  </footer>
+
+</body>
+</html>

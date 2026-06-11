@@ -71,12 +71,20 @@
       color: var(--navy);
     }
 
-    .header-tag {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.12em;
+    nav { display: flex; align-items: center; gap: 1.5rem; }
+
+    .nav-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s;
     }
+
+    .nav-link:hover { color: var(--white); }
+    .nav-link.active { color: var(--burgundy); }
 
     /* ── Hero ── */
     .hero {
@@ -265,6 +273,16 @@
 
     .btn-prep:active { transform: translateY(0); }
 
+    .btn-prep:disabled {
+      background: #ccc;
+      color: #fff;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .req { color: var(--burgundy); font-weight: 700; }
+
     .btn-prep svg { flex-shrink: 0; }
 
     /* ── Output ── */
@@ -382,6 +400,166 @@
       color: var(--label);
     }
 
+    /* ── Company meta (ownership / share price) ── */
+    .company-meta {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+
+    .meta-chip.public {
+      background: rgba(22, 163, 74, 0.1);
+      color: #16a34a;
+      border: 1px solid rgba(22, 163, 74, 0.25);
+    }
+
+    .meta-chip.private {
+      background: rgba(139, 26, 47, 0.08);
+      color: var(--burgundy);
+      border: 1px solid rgba(139, 26, 47, 0.2);
+    }
+
+    .meta-chip.share {
+      background: rgba(30, 35, 85, 0.07);
+      color: var(--navy);
+      border: 1px solid rgba(30, 35, 85, 0.15);
+    }
+
+    /* ── Ratings ── */
+    .ratings-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .rating-box {
+      flex: 1;
+      min-width: 140px;
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .rating-source {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .rating-score {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .rating-score span {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .rating-stars {
+      color: #f59e0b;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .rating-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── Media grid ── */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .media-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.15s;
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+    }
+
+    .media-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    .media-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: var(--off-black);
+      display: block;
+    }
+
+    .media-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--off-black) 0%, #e0e0e0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .media-body {
+      padding: 0.65rem 0.75rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    .media-type {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--burgundy);
+    }
+
+    .media-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.4;
+    }
+
+    .media-source {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 0.3rem;
+    }
+
     /* ── Spinner ── */
     .spinner-wrap {
       display: none;
@@ -434,7 +612,10 @@
       </svg>
       <span class="logo-name">the huddle</span>
     </div>
-    <span class="header-tag">AI Interview Intelligence</span>
+    <nav>
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="resources.html" class="nav-link">Resources</a>
+    </nav>
   </header>
 
   <!-- Hero -->
@@ -449,12 +630,12 @@
 
       <div class="form-row">
         <div class="field">
-          <label for="company">Company</label>
-          <input id="company" type="text" placeholder="e.g. Stripe" />
+          <label for="company">Company <span class="req">*</span></label>
+          <input id="company" type="text" placeholder="e.g. Stripe" oninput="checkFields()" />
         </div>
         <div class="field">
-          <label for="role">Role</label>
-          <input id="role" type="text" placeholder="e.g. Head of Product" />
+          <label for="role">Role <span class="req">*</span></label>
+          <input id="role" type="text" placeholder="e.g. Head of Product" oninput="checkFields()" />
         </div>
       </div>
 
@@ -464,8 +645,8 @@
       </div>
 
       <div class="field">
-        <label for="interviewers">Interviewer(s)</label>
-        <input id="interviewers" type="text" placeholder="e.g. Sarah Chen, James Okoye" />
+        <label for="interviewers">Interviewer(s) <span class="req">*</span></label>
+        <input id="interviewers" type="text" placeholder="e.g. Sarah Chen, James Okoye" oninput="checkFields()" />
       </div>
 
       <div class="field">
@@ -480,8 +661,8 @@
 
       <hr class="divider" />
 
-      <button class="btn-prep" onclick="runPrep()">
-        Prep Me for My Interview
+      <button class="btn-prep" id="submitBtn" onclick="runPrep()" disabled>
+        Let's Huddle
       </button>
 
     </div>
@@ -504,6 +685,14 @@
         <div class="output-card-title">Company Snapshot</div>
       </div>
       <p id="companySummary"></p>
+      <div class="company-meta" id="companyMeta"></div>
+    </div>
+
+    <div class="output-card" id="cardRatings">
+      <div class="output-card-header">
+        <div class="output-card-title">Employer Ratings</div>
+      </div>
+      <div class="ratings-row" id="ratingsRow"></div>
     </div>
 
     <div class="output-card" id="cardPainpoints">
@@ -522,7 +711,7 @@
 
     <div class="output-card" id="cardTopOfMind">
       <div class="output-card-header">
-        <div class="output-card-title">What's Top of Mind for the Interviewer</div>
+        <div class="output-card-title">What might be top of mind for the interviewer</div>
       </div>
       <ul id="topOfMindList"></ul>
     </div>
@@ -540,6 +729,13 @@
       </div>
       <ol class="questions-list" id="questionsList"></ol>
     </div>
+
+    <div class="output-card" id="cardMedia">
+      <div class="output-card-header">
+        <div class="output-card-title">Further Reading & Watching</div>
+      </div>
+      <div class="media-grid" id="mediaGrid"></div>
+    </div>
   </div>
 
   <footer>
@@ -553,6 +749,11 @@
   </footer>
 
   <script>
+    function checkFields() {
+      const filled = ['company', 'role', 'interviewers'].every(id => document.getElementById(id).value.trim());
+      document.getElementById('submitBtn').disabled = !filled;
+    }
+
     function resetForm() {
       document.getElementById('company').value = '';
       document.getElementById('role').value = '';
@@ -599,6 +800,51 @@
         document.getElementById('spinner').classList.remove('visible');
 
         document.getElementById('outputTitle').textContent = `${role} @ ${company}`;
+
+        // Ownership & share price
+        const meta = document.getElementById('companyMeta');
+        meta.innerHTML = `
+          <span class="meta-chip private">⚿ Privately Held</span>
+          <span class="meta-chip share">Valuation: ~$65B (last round)</span>`;
+
+        // Ratings
+        document.getElementById('ratingsRow').innerHTML = `
+          <div class="rating-box">
+            <div class="rating-source">Glassdoor</div>
+            <div class="rating-score">4.2 <span>/ 5</span></div>
+            <div class="rating-stars">★★★★☆</div>
+            <div class="rating-label">Based on 2,841 reviews</div>
+          </div>
+          <div class="rating-box">
+            <div class="rating-source">Blind</div>
+            <div class="rating-score">3.8 <span>/ 5</span></div>
+            <div class="rating-stars">★★★★☆</div>
+            <div class="rating-label">Based on 1,204 reviews</div>
+          </div>`;
+
+        // Media links
+        const mediaItems = [
+          { type: 'Article', title: 'How Stripe became the internet\'s invisible backbone', source: 'The Economist', emoji: '📰', url: '#' },
+          { type: 'Video', title: 'Patrick Collison on building for the long term', source: 'Y Combinator', emoji: '▶️', url: '#' },
+          { type: 'Article', title: 'Stripe\'s path to profitability in a higher-rate world', source: 'Financial Times', emoji: '📰', url: '#' },
+          { type: 'Video', title: 'Inside Stripe\'s culture of craft', source: 'Forbes', emoji: '▶️', url: '#' },
+          { type: 'Article', title: 'Stripe vs. the incumbents: a product breakdown', source: 'Stratechery', emoji: '📰', url: '#' },
+          { type: 'Video', title: 'John Collison on payments infrastructure', source: 'Bloomberg', emoji: '▶️', url: '#' },
+          { type: 'Article', title: 'The fintech regulatory wave and what it means for Stripe', source: 'Wired', emoji: '📰', url: '#' },
+          { type: 'Video', title: 'Stripe\'s enterprise push explained', source: 'TechCrunch', emoji: '▶️', url: '#' },
+          { type: 'Article', title: 'Inside Stripe\'s global expansion strategy', source: 'Rest of World', emoji: '📰', url: '#' },
+          { type: 'Article', title: 'What Stripe employees say about the culture', source: 'Business Insider', emoji: '📰', url: '#' },
+        ];
+        const grid = document.getElementById('mediaGrid');
+        grid.innerHTML = mediaItems.map(m => `
+          <a class="media-card" href="${m.url}" target="_blank" rel="noopener">
+            <div class="media-thumb-placeholder">${m.emoji}</div>
+            <div class="media-body">
+              <div class="media-type">${m.type}</div>
+              <div class="media-title">${m.title}</div>
+              <div class="media-source">${m.source}</div>
+            </div>
+          </a>`).join('');
 
         document.getElementById('companySummary').textContent =
           `${company} is a high-growth technology company operating at the intersection of financial infrastructure and developer tooling. Founded over a decade ago, it has scaled to process hundreds of billions in payments annually, serving millions of businesses across 135+ countries. The company is privately held at a valuation north of $65B and is widely regarded as the gold standard in its category. Its culture prizes rigour, intellectual honesty, and a high bar for craft — making preparation and precision critical for candidates.`;
