@@ -880,15 +880,11 @@
         document.getElementById('ratingsRow').innerHTML = `
           <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
             <div class="rating-source">Glassdoor ↗</div>
-            <div class="rating-score">4.2 <span>/ 5</span></div>
-            <div class="rating-stars">★★★★☆</div>
-            <div class="rating-label">Based on 2,841 reviews</div>
+            <div class="rating-label">See employee reviews and ratings for ${company} on Glassdoor.</div>
           </a>
           <a class="rating-box" href="https://www.teamblind.com/search/${companySlug}" target="_blank" rel="noopener">
             <div class="rating-source">Blind ↗</div>
-            <div class="rating-score">3.8 <span>/ 5</span></div>
-            <div class="rating-stars">★★★★☆</div>
-            <div class="rating-label">Based on 1,204 reviews</div>
+            <div class="rating-label">Search anonymous employee posts about ${company} on Blind.</div>
           </a>`;
 
         // Media links
