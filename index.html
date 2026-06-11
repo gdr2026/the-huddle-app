@@ -446,14 +446,15 @@
 
     .rating-box {
       flex: 1;
-      min-width: 140px;
-      background: var(--off-black);
+      min-width: 160px;
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
       display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
       text-decoration: none;
       color: inherit;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
@@ -461,40 +462,42 @@
 
     .rating-box:hover {
       border-color: var(--burgundy);
-      box-shadow: 0 4px 12px rgba(139, 26, 47, 0.1);
+      box-shadow: 0 4px 16px rgba(139, 26, 47, 0.08);
       transform: translateY(-1px);
     }
 
+    .rating-box-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
     .rating-source {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .rating-score {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .rating-score span {
-      font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--muted);
-    }
-
-    .rating-stars {
-      color: #f59e0b;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
+      color: var(--label);
     }
 
     .rating-label {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--muted);
+      line-height: 1.4;
+      max-width: 220px;
+    }
+
+    .rating-arrow {
+      font-size: 1.1rem;
+      color: var(--burgundy);
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .rating-box:hover .rating-arrow {
+      opacity: 1;
+      transform: translateX(3px);
     }
 
     /* ── Coaching nudge ── */
@@ -879,12 +882,18 @@
         const companySlug = encodeURIComponent(company);
         document.getElementById('ratingsRow').innerHTML = `
           <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
-            <div class="rating-source">Glassdoor ↗</div>
-            <div class="rating-label">See employee reviews and ratings for ${company} on Glassdoor.</div>
+            <div class="rating-box-left">
+              <div class="rating-source">Glassdoor</div>
+              <div class="rating-label">Employee reviews &amp; ratings for ${company}</div>
+            </div>
+            <div class="rating-arrow">→</div>
           </a>
           <a class="rating-box" href="https://www.teamblind.com/search/${companySlug}" target="_blank" rel="noopener">
-            <div class="rating-source">Blind ↗</div>
-            <div class="rating-label">Search anonymous employee posts about ${company} on Blind.</div>
+            <div class="rating-box-left">
+              <div class="rating-source">Blind</div>
+              <div class="rating-label">Anonymous employee posts about ${company}</div>
+            </div>
+            <div class="rating-arrow">→</div>
           </a>`;
 
         // Media links
