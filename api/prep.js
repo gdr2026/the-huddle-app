@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { company, role, interviewers, jobDescriptionUrl } = req.body;
+  const { company, role, interviewers, jobDescriptionUrl, linkedinUrl } = req.body;
 
   if (!company || !role || !interviewers) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -14,11 +14,15 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API key not configured' });
   }
 
+  const interviewerSection = linkedinUrl
+    ? `Interviewer(s): ${interviewers}\nLinkedIn Profile: ${linkedinUrl}\nUse the LinkedIn profile URL above to build an accurate, specific profile of the interviewer — their actual background, career history, seniority, and focus areas.`
+    : `Interviewer(s): ${interviewers}\nSearch the web for accurate information about this person before building their profile — find their actual LinkedIn, career history, and public background so the profile is specific and factual rather than generic.`;
+
   const prompt = `You are an expert interview preparation coach. A candidate is preparing for a job interview. Generate a structured interview brief based on the following details:
 
 Company: ${company}
 Role: ${role}
-Interviewer(s): ${interviewers}
+${interviewerSection}
 ${jobDescriptionUrl ? `Job Description URL: ${jobDescriptionUrl}` : ''}
 
 Return ONLY a valid JSON object with exactly this structure (no markdown, no explanation, just JSON):
@@ -35,11 +39,11 @@ Return ONLY a valid JSON object with exactly this structure (no markdown, no exp
     "Fifth pain point"
   ],
   "interviewerProfile": [
-    "Insight about the interviewer based on their name, likely role, and company context",
-    "What their seniority/background likely means for how they will run the interview",
-    "The kinds of questions or themes they are likely to focus on",
+    "Specific insight about the interviewer based on their actual background and career history",
+    "What their seniority and professional experience means for how they will run the interview",
+    "The kinds of questions or themes they are likely to focus on given their background",
     "What they probably value most in candidates for this role",
-    "One practical tip for connecting with them"
+    "One practical tip for connecting with them specifically"
   ],
   "topOfMind": [
     "What is likely most pressing for this interviewer right now",
@@ -69,30 +73,61 @@ Return ONLY a valid JSON object with exactly this structure (no markdown, no exp
 
 Make every field specific to ${company} and the ${role} role. Avoid generic advice. The interviewer(s) are: ${interviewers}.`;
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+  const useWebSearch = !linkedinUrl;
 
-    if (!response.ok) {
-      const err = await response.text();
-      return res.status(502).json({ error: 'Claude API error', detail: err });
+  const requestBody = {
+    model: 'claude-sonnet-4-6',
+    max_tokens: 2500,
+    messages: [{ role: 'user', content: prompt }],
+  };
+
+  if (useWebSearch) {
+    requestBody.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+  }
+
+  try {
+    let messages = requestBody.messages;
+    let finalText = null;
+
+    for (let i = 0; i < 6; i++) {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({ ...requestBody, messages }),
+      });
+
+      if (!response.ok) {
+        const err = await response.text();
+        return res.status(502).json({ error: 'Claude API error', detail: err });
+      }
+
+      const data = await response.json();
+      const textBlock = data.content && data.content.find(b => b.type === 'text');
+
+      if (data.stop_reason === 'end_turn') {
+        if (textBlock) finalText = textBlock.text;
+        break;
+      }
+
+      if (data.stop_reason === 'pause_turn') {
+        messages = [...messages, { role: 'assistant', content: data.content }];
+        continue;
+      }
+
+      // fallback: take whatever text we have
+      if (textBlock) { finalText = textBlock.text; break; }
+      break;
     }
 
-    const data = await response.json();
-    const text = data.content[0].text.trim();
-    const clean = text.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim();
+    if (!finalText) {
+      return res.status(502).json({ error: 'No response generated' });
+    }
 
+    const clean = finalText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim();
     const parsed = JSON.parse(clean);
     return res.status(200).json(parsed);
   } catch (err) {

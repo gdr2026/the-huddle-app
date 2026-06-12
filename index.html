@@ -713,6 +713,11 @@
       </div>
 
       <div class="field">
+        <label for="linkedinUrl">Interviewer LinkedIn URL <span class="opt">(optional — improves profile accuracy)</span></label>
+        <input id="linkedinUrl" type="url" placeholder="https://linkedin.com/in/sarah-chen" />
+      </div>
+
+      <div class="field">
         <label>Your CV <span class="opt">(optional — PDF or Word)</span></label>
         <div class="upload-zone" id="uploadZone">
           <input type="file" id="cvFile" accept=".pdf,.doc,.docx" />
@@ -868,6 +873,7 @@
       document.getElementById('role').value = '';
       document.getElementById('jd').value = '';
       document.getElementById('interviewers').value = '';
+      document.getElementById('linkedinUrl').value = '';
       document.getElementById('cvFile').value = '';
       document.getElementById('uploadZone').querySelector('.upload-label').innerHTML = '<strong>Click to upload</strong> or drag &amp; drop';
       document.getElementById('output').classList.remove('visible');
@@ -898,7 +904,8 @@
       const company = document.getElementById('company').value.trim();
       const role = document.getElementById('role').value.trim();
       const interviewers = document.getElementById('interviewers').value.trim();
-      const jobDescriptionUrl = document.getElementById('jobUrl') ? document.getElementById('jobUrl').value.trim() : '';
+      const jobDescriptionUrl = document.getElementById('jd') ? document.getElementById('jd').value.trim() : '';
+      const linkedinUrl = document.getElementById('linkedinUrl').value.trim();
 
       document.getElementById('spinner').classList.add('visible');
       document.getElementById('output').classList.remove('visible');
@@ -909,7 +916,7 @@
         const res = await fetch('/api/prep', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ company, role, interviewers, jobDescriptionUrl }),
+          body: JSON.stringify({ company, role, interviewers, jobDescriptionUrl, linkedinUrl }),
         });
         if (!res.ok) throw new Error(await res.text());
         data = await res.json();
