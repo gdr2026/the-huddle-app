@@ -751,13 +751,6 @@
       <div class="company-meta" id="companyMeta"></div>
     </div>
 
-    <div class="output-card" id="cardRatings">
-      <div class="output-card-header">
-        <div class="output-card-title">Employer Ratings</div>
-      </div>
-      <div class="ratings-row" id="ratingsRow"></div>
-    </div>
-
     <div class="output-card" id="cardPainpoints">
       <div class="output-card-header">
         <div class="output-card-title">Pain Points & Pressures</div>
@@ -798,7 +791,14 @@
         <div class="nudge-title">Coach's note</div>
         <div class="nudge-desc" id="coachingNudgeText">Work 1:1 with a coach to practise your answers, sharpen your story, and walk in truly ready.</div>
       </div>
-      <a href="coaching.html" class="nudge-btn">Work with a Coach →</a>
+      <a href="coaching.html" class="nudge-btn" id="coachingLink">Work with a Coach →</a>
+    </div>
+
+    <div class="output-card" id="cardRatings">
+      <div class="output-card-header">
+        <div class="output-card-title">Employer Ratings</div>
+      </div>
+      <div class="ratings-row" id="ratingsRow"></div>
     </div>
 
     <div class="output-card" id="cardMedia">
@@ -820,6 +820,44 @@
   </footer>
 
   <script>
+    // Restore previous results if returning from coaching page
+    (function restoreIfReturning() {
+      const saved = sessionStorage.getItem('huddleOutput');
+      const returning = sessionStorage.getItem('huddleReturnToResults');
+      if (!saved || !returning) return;
+      sessionStorage.removeItem('huddleReturnToResults');
+
+      const { company, role, interviewers, data } = JSON.parse(saved);
+
+      // Pre-fill form fields
+      document.getElementById('company').value = company;
+      document.getElementById('role').value = role;
+      document.getElementById('interviewers').value = interviewers;
+
+      // Show a "back to results" banner above the form
+      const banner = document.createElement('div');
+      banner.id = 'returnBanner';
+      banner.style.cssText = 'background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;';
+      banner.innerHTML = `
+        <div style="font-size:0.88rem;color:var(--label);">
+          <strong style="color:var(--white);">Your brief is ready</strong> — ${role} @ ${company}
+        </div>
+        <button onclick="restoreResults()" style="background:var(--burgundy);color:#fff;border:none;border-radius:8px;padding:0.55rem 1.1rem;font-size:0.8rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;">Back to results →</button>
+      `;
+      document.querySelector('.form-wrap').prepend(banner);
+
+      // Store data for restoreResults()
+      window._savedBriefData = { company, role, interviewers, data };
+    })();
+
+    function restoreResults() {
+      if (!window._savedBriefData) return;
+      const { company, role, interviewers, data } = window._savedBriefData;
+      renderOutput(company, role, interviewers, data);
+      document.querySelector('.form-wrap').style.display = 'none';
+      document.getElementById('banner') && document.getElementById('returnBanner').remove();
+    }
+
     function checkFields() {
       const filled = ['company', 'role', 'interviewers'].every(id => document.getElementById(id).value.trim());
       document.getElementById('submitBtn').disabled = !filled;
@@ -884,6 +922,15 @@
       }
 
       document.getElementById('spinner').classList.remove('visible');
+
+      // Save output state so user can return to results after visiting coaching page
+      sessionStorage.setItem('huddleOutput', JSON.stringify({ company, role, interviewers, data }));
+
+      renderOutput(company, role, interviewers, data);
+      document.querySelector('.form-wrap').style.display = 'none';
+    }
+
+    function renderOutput(company, role, interviewers, data) {
       document.getElementById('outputTitle').textContent = `${role} @ ${company}`;
 
       // Ownership chips
@@ -896,7 +943,7 @@
       // Ratings links
       const companySlug = encodeURIComponent(company);
       document.getElementById('ratingsRow').innerHTML = `
-        <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
+        <a class="rating-box" href="https://www.glassdoor.com/Reviews/company-reviews.htm?suggestCount=0&suggestChosen=false&clickSource=searchBtn&typedKeyword=${companySlug}&sc.keyword=${companySlug}&locT=&locId=&jobType=" target="_blank" rel="noopener">
           <div class="rating-box-left">
             <div class="rating-source">Glassdoor</div>
             <div class="rating-label">Employee reviews &amp; ratings for ${company}</div>
@@ -911,7 +958,7 @@
           <div class="rating-arrow">→</div>
         </a>`;
 
-      // Media grid — removed (no reliable source without web search)
+      // Media grid
       document.getElementById('mediaGrid').innerHTML = `<p style="font-size:0.82rem;color:var(--muted);grid-column:1/-1;">Search <a href="https://www.google.com/search?q=${companySlug}+news" target="_blank" rel="noopener" style="color:var(--burgundy)">Google News</a> or <a href="https://www.youtube.com/results?search_query=${companySlug}" target="_blank" rel="noopener" style="color:var(--burgundy)">YouTube</a> for recent coverage of ${company}.</p>`;
 
       document.getElementById('companySummary').textContent = data.companySnapshot || '';
@@ -922,9 +969,13 @@
       setList('cvList', data.cvHighlights || []);
       setList('questionsList', data.questions || []);
 
-      // Coaching nudge
       const nudgeEl = document.getElementById('coachingNudgeText');
       if (nudgeEl && data.coachingNudge) nudgeEl.textContent = data.coachingNudge;
+
+      // Wire coaching link to mark that user should return to results
+      document.getElementById('coachingLink').onclick = () => {
+        sessionStorage.setItem('huddleReturnToResults', '1');
+      };
 
       const out = document.getElementById('output');
       out.classList.add('visible');
