@@ -498,5 +498,21 @@
     <div>the huddle — AI-powered interview intelligence. Not affiliated with any company mentioned.</div>
   </footer>
 
+  <script>
+    (function() {
+      const saved = sessionStorage.getItem('huddleOutput');
+      if (!saved) return;
+      const { role, company } = JSON.parse(saved);
+
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.85rem 1.25rem;display:flex;align-items:center;gap:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.1);z-index:999;white-space:nowrap;';
+      banner.innerHTML = `
+        <span style="font-size:0.82rem;color:var(--label);">Your brief: <strong style="color:var(--white);">${role} @ ${company}</strong></span>
+        <a href="index.html" onclick="sessionStorage.setItem('huddleReturnToResults','1')" style="background:var(--burgundy);color:#fff;border-radius:8px;padding:0.45rem 1rem;font-size:0.78rem;font-weight:700;font-family:Poppins,sans-serif;text-decoration:none;">Back to results →</a>
+      `;
+      document.body.appendChild(banner);
+    })();
+  </script>
+
 </body>
 </html>
