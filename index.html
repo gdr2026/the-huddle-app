@@ -795,8 +795,8 @@
 
     <div class="coaching-nudge" id="coachingNudge">
       <div class="nudge-left">
-        <div class="nudge-title">Want to go deeper?</div>
-        <div class="nudge-desc">Work 1:1 with a coach to practise your answers, sharpen your story, and walk in truly ready.</div>
+        <div class="nudge-title">Coach's note</div>
+        <div class="nudge-desc" id="coachingNudgeText">Work 1:1 with a coach to practise your answers, sharpen your story, and walk in truly ready.</div>
       </div>
       <a href="coaching.html" class="nudge-btn">Work with a Coach →</a>
     </div>
@@ -856,124 +856,79 @@
       });
     }
 
-    function runPrep() {
-      const company = document.getElementById('company').value.trim() || 'the company';
-      const role = document.getElementById('role').value.trim() || 'this role';
+    async function runPrep() {
+      const company = document.getElementById('company').value.trim();
+      const role = document.getElementById('role').value.trim();
       const interviewers = document.getElementById('interviewers').value.trim();
+      const jobDescriptionUrl = document.getElementById('jobUrl') ? document.getElementById('jobUrl').value.trim() : '';
 
-      // Show spinner, hide output
       document.getElementById('spinner').classList.add('visible');
       document.getElementById('output').classList.remove('visible');
       document.querySelector('.form-wrap').style.display = 'none';
 
-      // Simulate AI call (replace with real API call)
-      setTimeout(() => {
+      let data;
+      try {
+        const res = await fetch('/api/prep', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ company, role, interviewers, jobDescriptionUrl }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        data = await res.json();
+      } catch (err) {
         document.getElementById('spinner').classList.remove('visible');
+        document.querySelector('.form-wrap').style.display = '';
+        alert('Something went wrong generating your brief. Please try again.');
+        console.error(err);
+        return;
+      }
 
-        document.getElementById('outputTitle').textContent = `${role} @ ${company}`;
+      document.getElementById('spinner').classList.remove('visible');
+      document.getElementById('outputTitle').textContent = `${role} @ ${company}`;
 
-        // Ownership & share price
-        const meta = document.getElementById('companyMeta');
-        meta.innerHTML = `
-          <span class="meta-chip private">⚿ Privately Held</span>
-          <span class="meta-chip share">Valuation: ~$65B (last round)</span>`;
+      // Ownership chips
+      const meta = document.getElementById('companyMeta');
+      const isPublic = (data.ownership || '').toLowerCase() === 'public';
+      meta.innerHTML = `
+        <span class="meta-chip ${isPublic ? 'public' : 'private'}">${isPublic ? '📈 Publicly Traded' : '⚿ Privately Held'}</span>
+        <span class="meta-chip share">${data.valuation || 'Valuation undisclosed'}</span>`;
 
-        // Ratings
-        const companySlug = encodeURIComponent(company);
-        document.getElementById('ratingsRow').innerHTML = `
-          <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
-            <div class="rating-box-left">
-              <div class="rating-source">Glassdoor</div>
-              <div class="rating-label">Employee reviews &amp; ratings for ${company}</div>
-            </div>
-            <div class="rating-arrow">→</div>
-          </a>
-          <a class="rating-box" href="https://www.teamblind.com/search/${companySlug}" target="_blank" rel="noopener">
-            <div class="rating-box-left">
-              <div class="rating-source">Blind</div>
-              <div class="rating-label">Anonymous employee posts about ${company}</div>
-            </div>
-            <div class="rating-arrow">→</div>
-          </a>`;
+      // Ratings links
+      const companySlug = encodeURIComponent(company);
+      document.getElementById('ratingsRow').innerHTML = `
+        <a class="rating-box" href="https://www.glassdoor.com/Search/results.htm?keyword=${companySlug}" target="_blank" rel="noopener">
+          <div class="rating-box-left">
+            <div class="rating-source">Glassdoor</div>
+            <div class="rating-label">Employee reviews &amp; ratings for ${company}</div>
+          </div>
+          <div class="rating-arrow">→</div>
+        </a>
+        <a class="rating-box" href="https://www.teamblind.com/search/${companySlug}" target="_blank" rel="noopener">
+          <div class="rating-box-left">
+            <div class="rating-source">Blind</div>
+            <div class="rating-label">Anonymous employee posts about ${company}</div>
+          </div>
+          <div class="rating-arrow">→</div>
+        </a>`;
 
-        // Media links
-        const mediaItems = [
-          { type: 'Article', title: 'How Stripe became the internet\'s invisible backbone', source: 'The Economist', emoji: '📰', url: '#' },
-          { type: 'Video', title: 'Patrick Collison on building for the long term', source: 'Y Combinator', emoji: '▶️', url: '#' },
-          { type: 'Article', title: 'Stripe\'s path to profitability in a higher-rate world', source: 'Financial Times', emoji: '📰', url: '#' },
-          { type: 'Video', title: 'Inside Stripe\'s culture of craft', source: 'Forbes', emoji: '▶️', url: '#' },
-          { type: 'Article', title: 'Stripe vs. the incumbents: a product breakdown', source: 'Stratechery', emoji: '📰', url: '#' },
-          { type: 'Video', title: 'John Collison on payments infrastructure', source: 'Bloomberg', emoji: '▶️', url: '#' },
-          { type: 'Article', title: 'The fintech regulatory wave and what it means for Stripe', source: 'Wired', emoji: '📰', url: '#' },
-          { type: 'Video', title: 'Stripe\'s enterprise push explained', source: 'TechCrunch', emoji: '▶️', url: '#' },
-          { type: 'Article', title: 'Inside Stripe\'s global expansion strategy', source: 'Rest of World', emoji: '📰', url: '#' },
-          { type: 'Article', title: 'What Stripe employees say about the culture', source: 'Business Insider', emoji: '📰', url: '#' },
-        ];
-        const grid = document.getElementById('mediaGrid');
-        grid.innerHTML = mediaItems.map(m => `
-          <a class="media-card" href="${m.url}" target="_blank" rel="noopener">
-            <div class="media-thumb-placeholder">${m.emoji}</div>
-            <div class="media-body">
-              <div class="media-type">${m.type}</div>
-              <div class="media-title">${m.title}</div>
-              <div class="media-source">${m.source}</div>
-            </div>
-          </a>`).join('');
+      // Media grid — removed (no reliable source without web search)
+      document.getElementById('mediaGrid').innerHTML = `<p style="font-size:0.82rem;color:var(--muted);grid-column:1/-1;">Search <a href="https://www.google.com/search?q=${companySlug}+news" target="_blank" rel="noopener" style="color:var(--burgundy)">Google News</a> or <a href="https://www.youtube.com/results?search_query=${companySlug}" target="_blank" rel="noopener" style="color:var(--burgundy)">YouTube</a> for recent coverage of ${company}.</p>`;
 
-        document.getElementById('companySummary').textContent =
-          `${company} is a high-growth technology company operating at the intersection of financial infrastructure and developer tooling. Founded over a decade ago, it has scaled to process hundreds of billions in payments annually, serving millions of businesses across 135+ countries. The company is privately held at a valuation north of $65B and is widely regarded as the gold standard in its category. Its culture prizes rigour, intellectual honesty, and a high bar for craft — making preparation and precision critical for candidates.`;
+      document.getElementById('companySummary').textContent = data.companySnapshot || '';
 
-        const interviewer1 = interviewers ? interviewers.split(',')[0].trim() : 'Your interviewer';
+      setList('painpointsList', data.painPoints || []);
+      setList('interviewerList', data.interviewerProfile || []);
+      setList('topOfMindList', data.topOfMind || []);
+      setList('cvList', data.cvHighlights || []);
+      setList('questionsList', data.questions || []);
 
-        setList('interviewerList', [
-          `${interviewer1} has a background likely spanning both operational and strategic responsibilities, with tenure that suggests they were part of building the function from an earlier stage.`,
-          `Their LinkedIn activity and public writing indicate a preference for data-informed decision making and a low tolerance for ambiguity in candidates.`,
-          `They tend to ask about process and frameworks — expect questions that probe how you structure your thinking, not just what outcomes you achieved.`,
-          `Colleagues describe them as direct and fast-paced; they will appreciate concise answers backed by evidence over polished but vague narratives.`,
-          `They have interviewed extensively for this level and will notice quickly if you haven't done your research on the company's current priorities.`,
-        ]);
+      // Coaching nudge
+      const nudgeEl = document.getElementById('coachingNudgeText');
+      if (nudgeEl && data.coachingNudge) nudgeEl.textContent = data.coachingNudge;
 
-        setList('painpointsList', [
-          'Sustaining growth rates as the business matures and competition from legacy incumbents intensifies.',
-          'Expanding into enterprise and regulated markets where the product-market fit is less proven.',
-          'Talent retention in a post-ZIRP environment where compensation expectations have shifted.',
-          'Deepening localisation for non-English markets amid increasing regulatory complexity.',
-          'Balancing platform openness with fraud risk and financial crime obligations.',
-        ]);
-
-        setList('topOfMindList', [
-          `Candidates who can demonstrate genuine impact at scale, not just activity metrics.`,
-          `How you think through first principles — ${company} prizes reasoning over credentials.`,
-          `Your ability to work cross-functionally and influence without authority.`,
-          `Evidence of a high ownership mentality and comfort operating in ambiguity.`,
-          interviewers ? `${interviewers.split(',')[0].trim()} is likely evaluating your strategic clarity and whether your communication style fits the team's directness.` : `Whether your communication style matches the company's direct, written-first culture.`,
-        ]);
-
-        setList('cvList', [
-          'Lead with quantified outcomes — revenue driven, users scaled, costs reduced. Numbers land.',
-          'Any experience with platform or infrastructure products will resonate strongly here.',
-          'Highlight cross-functional leadership: product, engineering, and commercial alignment.',
-          'Global or multi-market experience is a significant differentiator given their expansion agenda.',
-          'Evidence of raising the bar — hiring decisions, team building, or cultural contributions.',
-        ]);
-
-        setList('questionsList', [
-          `What does success look like in the first 90 days for someone joining as ${role}?`,
-          `Where is the team or function currently falling short of what you'd want it to be?`,
-          `How does ${company} balance moving fast with the rigour needed in a regulated environment?`,
-          `What's the biggest strategic bet the company is making in the next 18 months, and how does this role connect to it?`,
-          interviewers ? `${interviewers.split(',')[0].trim()}, what has surprised you most about working here?` : `What's surprised you most about working here?`,
-          `How is performance typically measured for this role, and how often is that reviewed?`,
-          `What are the biggest internal constraints on the team's ability to move quickly?`,
-          `How does leadership here handle disagreement — especially when data is ambiguous?`,
-          `What's the career trajectory for someone who excels in this position?`,
-          `Is there anything about my background that gives you pause that I could address directly?`,
-        ]);
-
-        const out = document.getElementById('output');
-        out.classList.add('visible');
-        out.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 2400);
+      const out = document.getElementById('output');
+      out.classList.add('visible');
+      out.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   </script>
 </body>
