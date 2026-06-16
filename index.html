@@ -858,7 +858,10 @@
         <div style="font-size:0.88rem;color:var(--label);">
           <strong style="color:var(--white);">Your brief is ready</strong> — ${role} @ ${company}
         </div>
-        <button onclick="restoreResults()" style="background:var(--burgundy);color:#fff;border:none;border-radius:8px;padding:0.55rem 1.1rem;font-size:0.8rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;">Back to results →</button>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+          <button onclick="restoreResults()" style="background:var(--burgundy);color:#fff;border:none;border-radius:8px;padding:0.55rem 1.1rem;font-size:0.8rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;">Back to results →</button>
+          <button onclick="document.getElementById('returnBanner').remove()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.1rem;line-height:1;padding:0.25rem;" title="Dismiss">✕</button>
+        </div>
       `;
       document.querySelector('.form-wrap').prepend(banner);
 
